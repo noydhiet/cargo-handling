@@ -1,30 +1,22 @@
 package service
 
 import (
-	// "fmt"
-	// "strings"
-	"database/sql"
-	// "log"
-	// "net/http"
-	// "text/template"
-	_ "github.com/go-sql-driver/mysql"
+	"log"
+	"os"
+
+	dt "cargo-handling/datastruct"
 )
 
-// Connect to database
-func dbConn() (db *sql.DB) {
-	dbDriver := "mysql"
-	dbUser := "root"
-	dbPass := "PASSWORD"
-	dbName := "db_go"
-	dbIP := "192.168.20.9"
+func UpdateStatusHandling(del dt.Handle) []dt.Handle {
+	logger := log.NewLogfmtLogger(os.Stdout)
+	logger.Log("Updating Database...")
 
-	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbIP+")/"+dbName)
+	db := dbConn()
+	upDB, err := db.Query("UPDATE ")
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	return db
+	
 }
-
-

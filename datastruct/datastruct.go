@@ -8,18 +8,24 @@ type UpdateStatusHandlingRequest struct {
 }
 
 type UpdateStatusHandlingResponse struct {
-	STATUS int `json:"status"`
-	MESSAGE string `json:"message"`
-}
-
-type GetStatusHandlingRequest struct {
-	ROUTE_ID string `json:"id_route_spec"`
-	ITENARY_ID string `json:"id_itenary"`
-	VOYAGE_NUMBER string `json:"voyage_number"`
-}
-
-type GetStatusHandlingResponse struct {
 	ROUTING_STATUS string `json:"routing_status"`
+}
+
+type GetHandleProcessRequest struct {
+	ROUTE_ID int `json:"id_route_spec"`
+	ITENARY_ID int `json:"id_itenary"`
+	VOYAGE_NUMBER int `json:"voyage_number"`
+}
+
+type GetHandleProcessResponse struct {
+	ROUTING_STATUS string `json:"routing_status"`
+}
+
+type Handle struct {
+	ID_ROUTE int 
+	ID_ITENARY int 
+	ROUTING_STATUS string 
+	TRANSPORT_STATUS string 
 }
 
 
