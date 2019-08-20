@@ -11,10 +11,10 @@ import (
 // Connect to database
 func dbConn() (db *sql.DB) {
 	dbDriver := "mysql"
-	dbUser := "root"
-	dbPass := "PASSWORD"
+	dbUser := ""
+	dbPass := ""
 	dbName := "db_go"
-	dbIP := "192.168.20.9"
+	dbIP := "127.0.0.1"
 
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbIP+")/"+dbName)
 
