@@ -23,7 +23,5 @@ type GetStatusHandlingResponse struct {
 }
 
 type Handling struct {
-	ID_ROUTE      string
-	ID_ITENARY    string
-	NUMBER_VOYAGE string
+	ROUTING_STATUS string
 }

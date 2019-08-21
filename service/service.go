@@ -31,26 +31,25 @@ func GetHandlingProcess(del dt.Handling) []dt.Handling {
 	// logger.Log("Checking Database")
 
 	db := dbConn()
-	getHandling, err := db.Query("SELECT * FROM t_trx_delivery WHERE routing_status = ?")
+	selDb, err := db.Query("SELECT * FROM t_trx_delivery WHERE routing_status = ?")
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	hndl := dt.Handling{}
+	hndle := dt.Handling{}
 	res := []dt.Handling{}
 
-	for getHandling.Next() {
-		var idRouteSpec, idItenary, numberVoyage string
-		var err = getHandling.Scan(&idRouteSpec, &idItenary, &numberVoyage)
+	for selDb.Next() {
+		var routingStatus string
+		err = selDb.Scan(&routingStatus)
 
 		if err != nil {
 			panic(err.Error())
 		}
-		hndl.ID_ROUTE = idRouteSpec
-		hndl.ID_ITENARY = idItenary
-		hndl.NUMBER_VOYAGE = numberVoyage
-		res = append(res, hndl)
+
+		hndle.ROUTING_STATUS = routingStatus
+		res = append(res, hndle)
 	}
 	// defer db.Close()
 	return res
