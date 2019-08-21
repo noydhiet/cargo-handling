@@ -3,16 +3,18 @@ package service
 import (
 	"database/sql"
 
-	_ "github.com/go-sql-driver/mysql"
+	dt "cargo-handling/datastruct"
 )
 
+// connect to database
 func dbConn() (db *sql.DB) {
 	dbDriver := "mysql"
-	dbUser := "root"
-	dbPass := "PASSWORD"
+	dbUser := ""
+	dbPass := ""
 	dbName := "db_go"
-	dbIp := "192.168.20.9"
-	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbIp+")/"+dbName)
+	dbIP := "127.0.0.1"
+
+	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbIP+")/"+dbName)
 
 	if err != nil {
 		panic(err.Error())
@@ -21,25 +23,28 @@ func dbConn() (db *sql.DB) {
 	return db
 }
 
-func viewALl(){
+func GetHandleProcess(get dt.Handling) []dt.Handling {
 
 	db := dbConn()
-	selDb, err := db.Query("SELECT ROUTING_STATUS, TRANS_STATUS FROM t_trx_delivery WHERE ROUTE_ID = ITENARY_ID")
-
-	if err != nil{
-		panic(err.Error())
-	}
-}
-
-
-func Update(w http.ResponseWriter, r *http.Request){
-	db := dbConn()
-
-	updForm, err := db.Prepare("UPDATE t_trx_delivery SET ROUTING_STATUS = success, TRANSPORT_STATUS = success ")
+	getHandle, err := db.Query("SELECT * FROM t_trx_delivery WHERE routing_status = ?")
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	defer db.Close()
+	hndle := dt.Handling{}
+	res := []dt.Handling{}
+
+	for getHandle.Next() {
+		var routingStatus string
+		err = getHandle.Scan(&routingStatus)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		hndle.ROUTING_STATUS = routingStatus
+		res = append(res, hndle)
+	}
+	return res
 }
