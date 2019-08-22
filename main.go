@@ -2,9 +2,10 @@ package main
 
 import (
 	"cargo-handling/transport"
-	"log"
 	"net/http"
 	"os"
+
+	"github.com/go-kit/kit/log"
 )
 
 func main() {
@@ -17,8 +18,9 @@ func main() {
 	if port == "" {
 		port = "8989"
 	}
-	logger.log("Listening-on", port)
+
+	logger.Log("Listening-on", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		logger.log("listen.error", err)
+		logger.Log("listen.error", err)
 	}
 }

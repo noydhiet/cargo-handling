@@ -9,7 +9,7 @@ import (
 // connect to database
 func dbConn() (db *sql.DB) {
 	dbDriver := "mysql"
-	dbUser := ""
+	dbUser := "root"
 	dbPass := ""
 	dbName := "db_go"
 	dbIP := "127.0.0.1"
@@ -23,17 +23,17 @@ func dbConn() (db *sql.DB) {
 	return db
 }
 
-func GetHandleProcess(get dt.Handling) []dt.Handling {
+func GetHandlingProcess(get dt.Handle) []dt.Handle {
 
 	db := dbConn()
-	getHandle, err := db.Query("SELECT * FROM t_trx_delivery WHERE routing_status = ?")
+	getHandle, err := db.Query("SELECT * FROM t_trx_delivery WHERE routing_status = ?", get.ROUTING_STATUS)
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	hndle := dt.Handling{}
-	res := []dt.Handling{}
+	hndle := dt.Handle{}
+	res := []dt.Handle{}
 
 	for getHandle.Next() {
 		var routingStatus string

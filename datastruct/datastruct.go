@@ -29,7 +29,3 @@ type Handle struct {
 	ID_ITENARY          int
 	ID_ROUTE            int
 }
-
-type Handling struct {
-	ROUTING_STATUS string
-}
