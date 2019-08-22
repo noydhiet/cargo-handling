@@ -1,9 +1,10 @@
 package service
 
 import (
+	dt "cargo-handling/datastruct"
 	"database/sql"
 
-	dt "cargo-handling/datastruct"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // connect to database
@@ -12,7 +13,7 @@ func dbConn() (db *sql.DB) {
 	dbUser := "root"
 	dbPass := ""
 	dbName := "db_go"
-	dbIP := "127.0.0.1"
+	dbIP := "127.0.0.1:3306"
 
 	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbIP+")/"+dbName)
 
@@ -36,15 +37,23 @@ func GetHandlingProcess(get dt.Handle) []dt.Handle {
 	res := []dt.Handle{}
 
 	for getHandle.Next() {
-		var routingStatus string
-		err = getHandle.Scan(&routingStatus)
+		var fk_id_route_spec, fk_id_itenary, idt_delivery int
+		var routing_status, transport_status, last_known_location string
+		err = getHandle.Scan(&fk_id_route_spec, &fk_id_itenary, &idt_delivery, &routing_status, &transport_status, &last_known_location)
 
 		if err != nil {
 			panic(err.Error())
 		}
 
-		hndle.ROUTING_STATUS = routingStatus
+		hndle.ROUTE_ID = fk_id_route_spec
+		hndle.ITENARY_ID = fk_id_itenary
+		hndle.DELIVERY_ID = idt_delivery
+		hndle.ROUTING_STATUS = routing_status
+		hndle.TRANSPORT_STATUS = transport_status
+		hndle.LAST_KNOWN_LOCATION = last_known_location
 		res = append(res, hndle)
 	}
+
 	return res
+
 }

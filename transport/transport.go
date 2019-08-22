@@ -37,11 +37,13 @@ func makeGetHandleProcessEndpoint(handling HandlingService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(datastruct.GetHandleProcessRequest)
 		paramDel := dt.Handle{}
-		paramDel.ID_ROUTE = req.ROUTE_ID
-		paramDel.ID_ITENARY = req.ITENARY_ID
-		paramDel.NUMBER_VOYAGE = req.VOYAGE_NUMBER
+		paramDel.ROUTE_ID = req.ROUTE_ID
+		paramDel.ITENARY_ID = req.ITENARY_ID
+		paramDel.ROUTING_STATUS = req.ROUTING_STATUS
 		handling.GetHandleProcessService(ctx, paramDel)
 		return datastruct.GetHandleProcessResponse{
+			// ROUTE_ID:       1,
+			// ITENARY_ID:     1,
 			ROUTING_STATUS: "UNLOAD",
 		}, nil
 	}
