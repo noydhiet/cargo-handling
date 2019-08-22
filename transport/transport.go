@@ -39,10 +39,14 @@ func makeUpdateStatusHandlingEndpoint(aph AphService) endpoint.Endpoint {
 		paramDel.ID_ITENARY = req.ITENARY_ID
 		paramDel.ROUTING_STATUS = req.ROUTING_STATUS
 		paramDel.TRANSPORT_STATUS = req.TRANSPORT_STATUS
+		paramDel.LAST_KNOWN_LOCATION = req.LAST_KNOWN_LOCATION
+		paramDel.DESTINATION = req.DESTINATION
 		aph.UpdateStatusHandlingService(ctx, paramDel)
 		return datastruct.UpdateStatusHandlingResponse{
 			ROUTING_STATUS: "Success",
 			TRANSPORT_STATUS: "Success",
+			RESPONSE_CODE:       200,
+			RESPONSE_DESC:       "Success",
 		}, nil
 	}
 }
@@ -59,7 +63,7 @@ func encodeResponse(_ context.Context, w http.ResponseWriter, response interface
 	return json.NewEncoder(w).Encode(response)
 }
 
-func RegisterHttpsServiceAndStartListener() {
+func RegisterHttpsServicesAndStartListener() {
 	aph := aphService{}
 
 	UpdateStatusHandlingHandler := httptransport.NewServer(
@@ -69,5 +73,5 @@ func RegisterHttpsServiceAndStartListener() {
 	)
 
 	//url path of our API Service
-	http.Handle("UpdateStatusHandling", UpdateStatusHandlingHandler)
+	http.Handle("/UpdateStatusHandling", UpdateStatusHandlingHandler)
 }
